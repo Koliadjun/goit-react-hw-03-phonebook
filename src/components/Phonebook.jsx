@@ -11,12 +11,35 @@ export class Phonebook extends Component {
     contacts: [],
   };
   static propTypes = {
-    contacts: PropTypes.array.isRequired,
+    contacts: PropTypes.array,
   };
   state = {
     contacts: this.props.contacts,
     filter: '',
   };
+  componentDidMount() {
+    const data = this.getDataFromLS();
+    console.log(data);
+    if (data) {
+      this.setState({
+        contacts: [...data],
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // питання чи потрібна тут ця провірка?
+    if (prevState.contacts.length !== this.state.contacts.length) {
+      this.setDataToLS();
+    }
+  }
+  getDataFromLS = () => {
+    return JSON.parse(localStorage.getItem('contacts'));
+  };
+  setDataToLS = () => {
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  };
+
   formSubmitHandler = data => {
     const dataNameNormalized = data.name.toLowerCase();
     const findItem = this.state.contacts.find(
