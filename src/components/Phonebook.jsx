@@ -29,7 +29,7 @@ export class Phonebook extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // питання чи потрібна тут ця провірка?
-    if (prevState.contacts.length !== this.state.contacts.length) {
+    if (prevState.contacts !== this.state.contacts) {
       this.setDataToLS();
     }
   }
